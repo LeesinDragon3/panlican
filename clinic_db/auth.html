@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Clinic - Login & Signup</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #1a7c4a 0%, #2ea169 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.login-container {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  min-height: 550px;
+}
+
+.left-panel {
+  flex: 1;
+  background: linear-gradient(135deg, #1a7c4a 0%, #2ea169 100%);
+  padding: 60px 40px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.left-panel::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: pulse 15s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.logo {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.logo span {
+  color: #fff;
+}
+
+.welcome-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  opacity: 0.95;
+  position: relative;
+  z-index: 1;
+}
+
+.feature-list {
+  list-style: none;
+  margin-top: 30px;
+  position: relative;
+  z-index: 1;
+}
+
+.feature-list li {
+  padding: 10px 0;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+}
+
+.feature-list li i {
+  margin-right: 12px;
+  font-size: 1.2rem;
+}
+
+.right-panel {
+  flex: 1;
+  padding: 60px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.form-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 15px;
+}
+
+.form-toggle button {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #999;
+  cursor: pointer;
+  padding: 8px 15px;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.form-toggle button.active {
+  color: #1a7c4a;
+}
+
+.form-toggle button.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #1a7c4a;
+  border-radius: 3px;
+}
+
+.form-subtitle {
+  color: #666;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+form {
+  display: none;
+  animation: fadeIn 0.4s ease-in;
+}
+
+form.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 25px;
+}
+
+.input-group i {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  font-size: 1.1rem;
+  z-index: 1;
+}
+
+.input-group input,
+.input-group select {
+  width: 100%;
+  padding: 14px 15px 14px 45px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  transition: all 0.3s;
+  outline: none;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+  border-color: #1a7c4a;
+  box-shadow: 0 0 0 4px rgba(26, 124, 74, 0.1);
+}
+
+.input-group select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  padding-right: 40px;
+  background-color: white;
+}
+
+.remember-forgot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  font-size: 0.9rem;
+}
+
+.remember-forgot label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #666;
+}
+
+.remember-forgot input[type="checkbox"] {
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.forgot-link {
+  color: #1a7c4a;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.forgot-link:hover {
+  color: #145c37;
+  text-decoration: underline;
+}
+
+.additional-fields {
+  display: none;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.additional-fields.show {
+  display: block;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #1a7c4a 0%, #2ea169 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(26, 124, 74, 0.3);
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(26, 124, 74, 0.4);
+}
+
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    flex-direction: column;
+    max-width: 450px;
+  }
+  
+  .left-panel {
+    padding: 40px 30px;
+    min-height: 250px;
+  }
+  
+  .right-panel {
+    padding: 40px 30px;
+    max-height: none;
+  }
+  
+  .logo {
+    font-size: 2rem;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="login-container">
+  <!-- Left Panel -->
+  <div class="left-panel">
+    <div class="logo">MED<span>+</span> Clinic</div>
+    <div class="welcome-text">
+      Your Health, Our Priority. Access quality healthcare services anytime, anywhere.
+    </div>
+    <ul class="feature-list">
+      <li><i class="bi bi-check-circle-fill"></i> Book Appointments Online</li>
+      <li><i class="bi bi-check-circle-fill"></i> Consult Expert Doctors</li>
+      <li><i class="bi bi-check-circle-fill"></i> Digital Prescriptions</li>
+      <li><i class="bi bi-check-circle-fill"></i> Secure Medical Records</li>
+    </ul>
+  </div>
+
+  <!-- Right Panel -->
+  <div class="right-panel">
+    <div class="form-header">
+      <div class="form-toggle">
+        <button id="login-btn" class="active" type="button">Login</button>
+        <button id="signup-btn" type="button">Sign Up</button>
+      </div>
+      <p class="form-subtitle">Welcome back! Please enter your details</p>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <form id="login-form" class="active" action="login.php" method="POST">
+      <div class="input-group">
+        <i class="bi bi-envelope"></i>
+        <input type="email" name="username" placeholder="Email Address" required>
+      </div>
+      
+      <div class="input-group">
+        <i class="bi bi-lock"></i>
+        <input type="password" name="password" placeholder="Password" required>
+      </div>
+
+      <div class="remember-forgot">
+        <label>
+          <input type="checkbox" name="remember">
+          Remember me
+        </label>
+        <a href="forgot_password.php" class="forgot-link">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        <i class="bi bi-box-arrow-in-right"></i> Login
+      </button>
+    </form>
+
+    <!-- SIGNUP FORM -->
+    <form id="signup-form" action="signup.php" method="POST">
+      <div class="input-group">
+        <i class="bi bi-person"></i>
+        <input type="text" name="fullname" placeholder="Full Name" required>
+      </div>
+
+      <div class="input-group">
+        <i class="bi bi-envelope"></i>
+        <input type="email" name="username" placeholder="Email Address" required>
+      </div>
+
+      <div class="input-group">
+        <i class="bi bi-phone"></i>
+        <input type="tel" name="contact" placeholder="Contact Number" required>
+      </div>
+
+      <div class="input-group">
+        <i class="bi bi-lock"></i>
+        <input type="password" name="password" placeholder="Password" required>
+      </div>
+
+      <div class="input-group">
+        <i class="bi bi-lock-fill"></i>
+        <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+      </div>
+
+      <div class="input-group">
+        <i class="bi bi-person-badge"></i>
+        <select name="role" id="role-select" required>
+          <option value="">Select Role</option>
+          <option value="patient">Patient</option>
+          <option value="doctor">Doctor</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+
+      <!-- Additional fields for Doctor -->
+      <div id="doctor-fields" class="additional-fields">
+        <div class="input-group">
+          <i class="bi bi-card-text"></i>
+          <input type="text" name="doctor_id" placeholder="Doctor License ID" id="doctor-id-input">
+        </div>
+        
+        <div class="input-group">
+          <i class="bi bi-hospital"></i>
+          <input type="text" name="specialty" placeholder="Specialization (e.g., Cardiology)" id="specialty-input">
+        </div>
+      </div>
+
+      <!-- Additional fields for Admin -->
+      <div id="admin-fields" class="additional-fields">
+        <div class="input-group">
+          <i class="bi bi-key"></i>
+          <input type="text" name="admin_code" placeholder="Admin Access Code" id="admin-code-input">
+        </div>
+        
+        <div class="input-group">
+          <i class="bi bi-shield-check"></i>
+          <input type="text" name="admin_id" placeholder="Admin ID" id="admin-id-input">
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        <i class="bi bi-person-plus"></i> Create Account
+      </button>
+    </form>
+  </div>
+</div>
+
+<script>
+const loginBtn = document.getElementById("login-btn");
+const signupBtn = document.getElementById("signup-btn");
+const loginForm = document.getElementById("login-form");
+const signupForm = document.getElementById("signup-form");
+const formSubtitle = document.querySelector(".form-subtitle");
+
+loginBtn.addEventListener("click", () => {
+  loginBtn.classList.add("active");
+  signupBtn.classList.remove("active");
+  loginForm.classList.add("active");
+  signupForm.classList.remove("active");
+  formSubtitle.textContent = "Welcome back! Please enter your details";
+});
+
+signupBtn.addEventListener("click", () => {
+  signupBtn.classList.add("active");
+  loginBtn.classList.remove("active");
+  signupForm.classList.add("active");
+  loginForm.classList.remove("active");
+  formSubtitle.textContent = "Create your account to get started";
+});
+
+// Show/hide additional fields based on role selection
+const roleSelect = document.getElementById('role-select');
+const doctorFields = document.getElementById('doctor-fields');
+const adminFields = document.getElementById('admin-fields');
+const doctorIdInput = document.getElementById('doctor-id-input');
+const specialtyInput = document.getElementById('specialty-input');
+const adminCodeInput = document.getElementById('admin-code-input');
+const adminIdInput = document.getElementById('admin-id-input');
+
+roleSelect.addEventListener('change', function() {
+  const selectedRole = this.value;
+  
+  // Hide all additional fields first
+  doctorFields.classList.remove('show');
+  adminFields.classList.remove('show');
+  
+  // Remove required attribute from all additional fields
+  doctorIdInput.removeAttribute('required');
+  specialtyInput.removeAttribute('required');
+  adminCodeInput.removeAttribute('required');
+  adminIdInput.removeAttribute('required');
+  
+  // Show relevant fields based on selection
+  if (selectedRole === 'doctor') {
+    doctorFields.classList.add('show');
+    doctorIdInput.setAttribute('required', 'required');
+    specialtyInput.setAttribute('required', 'required');
+  } else if (selectedRole === 'admin') {
+    adminFields.classList.add('show');
+    adminCodeInput.setAttribute('required', 'required');
+    adminIdInput.setAttribute('required', 'required');
+  }
+});
+</script>
+
+</body>
+</html>
